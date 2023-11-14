@@ -1,7 +1,9 @@
 package base;
 
 import entities.storePOJO.CreateOrderRequestBody;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.restassured.response.Response;
+import org.aeonbits.owner.ConfigFactory;
 import org.testng.annotations.Test;
 import utils.AppProperties;
 import utils.ApplicationProLoader;
@@ -13,26 +15,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RA_Wrapper extends RA_Implementation {
-    PropertiesCache sys;
+//    PropertiesCache sys;
+    public static int orderId;
+//
+//    {
+//        try {
+//            sys = new PropertiesCache();
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    private final String basePath =  sys.getProperty("version") + "/" + sys.getProperty("storeModule") + "/" + "order";
 
-    {
-        try {
-            sys = new PropertiesCache();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    private final String basePath = "/" + sys.getProperty("version") + "/" + sys.getProperty("storeModule") + "/" + "order" + "/";
-
-    public Response getOrder(String orderId) {
-        Response getResponse = getToAPI(sys.getProperty("endpoint"),
+    private final String basePath = ApplicationProLoader.loadProps().version() +
+            "/" + ApplicationProLoader.loadProps().storeModule() +
+            "/order";
+    public Response getOrder(int orderId) {
+        return getToAPI(ApplicationProLoader.loadProps().endpoint(),
                 Map.of("Accept", "Application/json"),
-                basePath+orderId);
-        return getResponse;
+                basePath+"/"+orderId);
     }
 
+    public Response createOrder(Object reqBody){
+        return postToAPI(ApplicationProLoader.loadProps().endpoint(),
+                Map.of("Accept", "Application/json","Content-Type","Application/json"),
+                basePath,reqBody);
+    }
 
-
+    public Response deleteOrder(int orderId) {
+        return deleteToAPI(ApplicationProLoader.loadProps().endpoint(),
+                Map.of("Accept", "Application/json"),
+                basePath + "/" + orderId);
+    }
 
 }

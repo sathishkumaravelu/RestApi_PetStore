@@ -8,52 +8,36 @@ import java.util.Date;
 import java.util.Random;
 
 public class CreateOrderDP {
+    private static final Random random = new Random();
 
-    public static int generateRandomId() {
-        Random random = new Random();
-        return random.nextInt(10) + 1;
+    private static int generateRandomNumber(int bound) {
+        return random.nextInt(bound) + 1;
     }
 
-    public static int generateRandomPetId() {
-        Random random = new Random();
-        return random.nextInt(10) + 1;
-    }
-
-    public static int generateRandomQuantity() {
-        Random random = new Random();
-        return random.nextInt(50) + 1;
-    }
-
-    public static String generateRandomShipDate() {
+    private static String generateRandomShipDate() {
         Date juDate = new Date();
         DateTime dt = new DateTime(juDate);
-        String shipDate = dt.toLocalDateTime().toString() + "Z";
-        return shipDate;
+        return dt.toLocalDateTime().toString() + "Z";
     }
 
-    public static String generateRandomStatus() {
-        Random random = new Random();
+    private static String generateRandomStatus() {
         String[] statusList = {"placed", "approved", "delivered"};
         return statusList[random.nextInt(statusList.length)];
     }
 
-    public static boolean generateRandomComplete() {
-        Random random = new Random();
+    private static boolean generateRandomComplete() {
         return random.nextBoolean();
     }
 
     @DataProvider
     public Object[][] getData() {
         CreateOrderRequestBody order = new CreateOrderRequestBody();
-        order.setId(generateRandomId());
-        order.setPetId(generateRandomPetId());
-        order.setQuantity(generateRandomQuantity());
+        order.setId(generateRandomNumber(10));
+        order.setPetId(generateRandomNumber(10));
+        order.setQuantity(generateRandomNumber(50));
         order.setShipDate(generateRandomShipDate());
         order.setStatus(generateRandomStatus());
         order.setComplete(generateRandomComplete());
-
         return new Object[][]{{order}};
     }
-
-
 }
