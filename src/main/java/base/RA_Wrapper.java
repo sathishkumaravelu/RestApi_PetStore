@@ -30,24 +30,29 @@ public class RA_Wrapper extends RA_Implementation {
 
 
     private final String basePath = ApplicationProLoader.loadProps().version() +
-            "/" + ApplicationProLoader.loadProps().storeModule() +
-            "/order";
+            "/" ;
     public Response getOrder(int orderId) {
         return getToAPI(ApplicationProLoader.loadProps().endpoint(),
                 Map.of("Accept", "Application/json"),
-                basePath+"/"+orderId);
+                basePath+ ApplicationProLoader.loadProps().storeModule()+"/order/"+orderId);
     }
 
     public Response createOrder(Object reqBody){
         return postToAPI(ApplicationProLoader.loadProps().endpoint(),
                 Map.of("Accept", "Application/json","Content-Type","Application/json"),
-                basePath,reqBody);
+                basePath+ ApplicationProLoader.loadProps().storeModule()+"/order/",reqBody);
     }
 
     public Response deleteOrder(int orderId) {
         return deleteToAPI(ApplicationProLoader.loadProps().endpoint(),
                 Map.of("Accept", "Application/json"),
-                basePath + "/" + orderId);
+                basePath + ApplicationProLoader.loadProps().storeModule()+ "/order/" + orderId);
+    }
+
+    public Response createUser(Object reqBody){
+        return postToAPI(ApplicationProLoader.loadProps().endpoint(),
+                Map.of("Accept", "Application/json","Content-Type","Application/json"),
+                basePath+ApplicationProLoader.loadProps().userModule()+"/createWithArray",reqBody);
     }
 
 }

@@ -2,7 +2,7 @@ package base;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import lombok.Data;
+
 
 
 import java.util.Map;
